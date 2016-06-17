@@ -1,10 +1,8 @@
-/* Sweep
- by BARRAGAN <http://barraganstudio.com>
- This example code is in the public domain.
+/* Example 1
+  by Rodolfo Cossovich http://rudi.plobot.com
+  This example code is in the public domain.
 
- modified 8 Nov 2013
- by Scott Fitzgerald
- http://arduino.cc/en/Tutorial/Sweep
+  Servo connected to D2
 */
 
 #include <Servo.h>
@@ -23,14 +21,7 @@
 //#define pinSD2 9 //reserved
 #define pinSD3 10
 
-
-
-#define trigPin D0
-#define echoPin D1
-
-
 Servo myservo;  // create servo object to control a servo
-// twelve servo objects can be created on most boards
 
 int pos = 0;    // variable to store the servo position
 
@@ -42,49 +33,13 @@ const long interval = 500;           // interval at which to blink (milliseconds
 
 void setup()
 {
-  //
   Serial.begin(115200);
-
-  pinMode( D0, OUTPUT);
-  pinMode( D1, OUTPUT);
-  pinMode( D2, OUTPUT);
-  pinMode( D5, OUTPUT);
-  pinMode( D6, OUTPUT);
-  pinMode( D7, OUTPUT);
-  pinMode( D8, OUTPUT);
-
-
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-
   Serial.println("starting...");
 }
 
 void loop()
 {
-  // servo();
-  breathe();
-
-  unsigned long currentMillis = millis();
-
-  if (currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the LED
-    previousMillis = currentMillis;
-    int distance = ultra();
-    Serial.println ( distance );
-    if (distance < 4) {  // This is where the LED On/Off happens
-      Serial.print("really close!");
-      servo();
-    }
-    else {
-      //do nothing
-    }
-
-    Serial.print(distance);
-    Serial.println(" cm");
-
-  }
-
+  servo();
 }
 
 void servo (void) {
@@ -102,24 +57,4 @@ void servo (void) {
   myservo.detach();
 }
 
-void breathe ( void ) {
-  float currentMillis = millis() / 5000.0;
-  int value = 512.0 + 512 * sin( currentMillis * 2.0 * PI  );
-  analogWrite(D6, value);
-  analogWrite(D7, value);
-  analogWrite(D5, value);
-}
-
-
-int ultra() {
-  long duration, distance;
-  digitalWrite(trigPin, LOW);  // Added this line
-  delayMicroseconds(2); // Added this line
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10); // Added this line
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance = (duration / 29) ;
-  return (int)distance;
-}
 

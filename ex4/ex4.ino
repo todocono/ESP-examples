@@ -1,10 +1,9 @@
-/* Example 1
+/* Example 4
   by Rodolfo Cossovich http://rudi.plobot.com
   This example code is in the public domain.
 
-  Ultrasound HC-SR04
+  Two motors
 */
-
 
 #define D0 16     //onboard LED 
 #define D1 5
@@ -15,63 +14,69 @@
 #define D6 12
 #define D7 13
 #define D8 15   //needs to be open when flashing
-// pin9 USB
-// D10 USB 
+// D9 USB
+// D10 USB
 //#define pinSD2 9 //reserved
-#define pinSD3 10
+#define SD3 10
 
-#define trigPin D0
-#define echoPin D1
+#define PWMA D1
+#define DIRA D3
+#define PWMB D2
+#define DIRB D4
 
-unsigned long previousMillis = 0;        // will store last time LED was updated
 
 // constants won't change :
-const long interval = 500;           // interval at which to blink (milliseconds)
+const long TIME = 500;           // interval at which to blink (milliseconds)
 
+int speed = 1024;                // a number between 0 and 1024
 
 void setup()
 {
-  //
+  // 
   Serial.begin(115200);
-
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-
+  pinMode( PWMA, OUTPUT);
+  pinMode( DIRA, OUTPUT);
+  pinMode( PWMB, OUTPUT);
+  pinMode( DIRB, OUTPUT);
   Serial.println("starting...");
 }
 
 void loop()
 {
-  unsigned long currentMillis = millis();
+  Serial.println("MOTOR A...");
+  motor0 (speed, 0);
+  delay (TIME);
+  motor0 (speed, 1);
+  delay (TIME);
+  motor0 (0, 0);
 
-  if (currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the LED
-    previousMillis = currentMillis;
-    int distance = ultra();
-    Serial.println ( distance );
-    if (distance < 4) {  // This is where the LED On/Off happens
-      Serial.print("really close!");
-    
-    }
-    else {
-      //do nothing
-    }
-
-    Serial.print(distance);
-    Serial.println(" cm");
-  }
+  Serial.println("MOTOR B...");
+  motor1 (speed, 0);
+  delay (TIME);
+  motor1 (speed, 1);
+  delay (TIME);
+  motor1 (0, 0);
 }
 
 
-int ultra() {
-  long duration, distance;
-  digitalWrite(trigPin, LOW);  // Added this line
-  delayMicroseconds(2); // Added this line
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10); // Added this line
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance = (duration / 29) ;
-  return (int)distance;
+void motor0 ( int speed, int direction) {
+  if (direction) {
+    digitalWrite(DIRA, HIGH);
+  }
+  else {
+    digitalWrite(DIRA, LOW);
+  }
+  analogWrite(PWMA, speed);
+}
+
+
+void motor1 ( int speed, int direction) {
+  if (direction) {
+    digitalWrite(DIRB, HIGH);
+  }
+  else {
+    digitalWrite(DIRB, LOW);
+  }
+  analogWrite(PWMB, speed);
 }
 

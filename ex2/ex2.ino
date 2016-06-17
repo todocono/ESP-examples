@@ -1,13 +1,10 @@
-/* Sweep
-  by BARRAGAN <http://barraganstudio.com>
+/* Example 2
+  by Rodolfo Cossovich http://rudi.plobot.com
   This example code is in the public domain.
 
-  modified 8 Nov 2013
-  by Scott Fitzgerald
-  http://arduino.cc/en/Tutorial/Sweep
+  Ultrasound HC-SR04
 */
 
-//#include <Servo.h>
 
 #define D0 16     //onboard LED 
 #define D1 5
@@ -18,75 +15,63 @@
 #define D6 12
 #define D7 13
 #define D8 15   //needs to be open when flashing
-// D9 USB
-// D10 USB
+// pin9 USB
+// D10 USB 
 //#define pinSD2 9 //reserved
 #define pinSD3 10
 
-//pins for ultrasound
 #define trigPin D0
 #define echoPin D1
 
-//pins for ultrasound
-#define PWMA 5
-#define DIRA 0
-#define PWMB D2
-#define DIRB D4
+unsigned long previousMillis = 0;        // will store last time LED was updated
 
 // constants won't change :
-const long TIME = 500;           // interval at which to blink (milliseconds)
+const long interval = 500;           // interval at which to blink (milliseconds)
 
 
 void setup()
 {
   //
   Serial.begin(115200);
-  pinMode( PWMA, OUTPUT);
-  pinMode( DIRA, OUTPUT);
-  pinMode( PWMB, OUTPUT);
-  pinMode( DIRB, OUTPUT);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
   Serial.println("starting...");
 }
 
 void loop()
 {
-  // servo();
-  //breathe();
-  Serial.println("MOTOR A...");
-  motor0 (1024, 0);
-  delay (TIME);
-  motor0 (1024, 1);
-  delay (TIME);
-  motor0 (0, 0);
+  unsigned long currentMillis = millis();
 
-  Serial.println("MOTOR B...");
-  motor1 (1024, 0);
-  delay (TIME);
-  motor1 (1024, 1);
-  delay (TIME);
-  motor1 (0, 0);
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+    int distance = ultra();
+    Serial.println ( distance );
+    if (distance < 4) {  // This is where the LED On/Off happens
+      Serial.print("really close!");
+    
+    }
+    else {
+      //do nothing
+    }
 
+    Serial.print(distance);
+    Serial.println(" cm");
+  }
 }
 
 
-void motor0 ( int speed, int direction) {
-  if (direction) {
-    digitalWrite(DIRA, HIGH);
-  }
-  else {
-    digitalWrite(DIRA, LOW);
-  }
-  analogWrite(PWMA, speed);
-}
-
-
-void motor1 ( int speed, int direction) {
-  if (direction) {
-    digitalWrite(DIRB, HIGH);
-  }
-  else {
-    digitalWrite(DIRB, LOW);
-  }
-  analogWrite(PWMB, speed);
+int ultra() {
+  long duration, distance;
+  digitalWrite(trigPin, LOW);  // Added this line
+  delayMicroseconds(2); // Added this line
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10); // Added this line
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration / 29) ;
+  return (int)distance;
 }
 
