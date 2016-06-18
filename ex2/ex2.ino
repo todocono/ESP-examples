@@ -18,10 +18,10 @@
 // pin9 USB
 // D10 USB 
 //#define pinSD2 9 //reserved
-#define pinSD3 10
+#define SD3 10
 
 #define trigPin D0
-#define echoPin D1
+#define echoPin D1//SD3
 
 unsigned long previousMillis = 0;        // will store last time LED was updated
 
@@ -48,7 +48,11 @@ void loop()
     // save the last time you blinked the LED
     previousMillis = currentMillis;
     int distance = ultra();
+    //if (distance < 40)
+    //{
     Serial.println ( distance );
+    //}
+    
     if (distance < 4) {  // This is where the LED On/Off happens
       Serial.print("really close!");
     
