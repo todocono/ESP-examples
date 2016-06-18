@@ -2,6 +2,7 @@
 
 This is a set of examples thought in order to run a workshop with them. Hardware is based on the nodeMCU clone AMICA with a motor driver board from doit.am
 
+![alt tag](https://github.com/todocono/ESP-examples/blob/master/NODEmcuPinOut.png)
 
 # EX0
 Demonstration of RGB LED and Serial communication
