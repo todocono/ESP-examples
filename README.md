@@ -4,6 +4,8 @@ This is a set of examples thought in order to run a workshop with them. Hardware
 
 ![alt tag](https://github.com/todocono/ESP-examples/blob/master/NODEmcuPinOut.png)
 
+![alt tag](https://github.com/todocono/ESP-examples/blob/master/IOT-AMICA_pinout.jpg)
+
 # EX0
 Demonstration of RGB LED and Serial communication
 
