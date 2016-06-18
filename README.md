@@ -27,3 +27,13 @@ Ultrasound sensor activates a servo and uses Serial
 
 # EX7
 Features two motors with an ultrasound sensor and a servo. The function is basically like a roomba robot. It goes ahead, turns a bit if it sees an obstacle far away but goes backward and activates the servo if there is an obstacle very close.
+
+
+
+# EX8
+Using a softAP it serves a set of pages and Over The Air Updates
+
+
+
+# EX9
+Using the WIFImanager, it has the autoconnect function to switch from Access Point to STATION. It also serves statically all pages hosted in the SPIFFS
