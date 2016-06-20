@@ -16,12 +16,13 @@
 #define D7 13
 #define D8 15   //needs to be open when flashing
 // pin9 USB
-// D10 USB 
+// D10 USB
 //#define pinSD2 9 //reserved
 #define SD3 10
 
-#define trigPin D0
-#define echoPin D1//SD3
+//#define trigPin D0
+//#define echoPin D1//SD3
+#define TrigEcho D0
 
 unsigned long previousMillis = 0;        // will store last time LED was updated
 
@@ -34,8 +35,8 @@ void setup()
   //
   Serial.begin(115200);
 
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+ //  pinMode(trigPin, OUTPUT);
+ // pinMode(echoPin, INPUT);
 
   Serial.println("starting...");
 }
@@ -48,33 +49,39 @@ void loop()
     // save the last time you blinked the LED
     previousMillis = currentMillis;
     int distance = ultra();
-    //if (distance < 40)
-    //{
-    Serial.println ( distance );
-    //}
-    
-    if (distance < 4) {  // This is where the LED On/Off happens
-      Serial.print("really close!");
-    
-    }
-    else {
-      //do nothing
-    }
+    if (distance < 200)   //checks
+    {
+      //Serial.println ( distance );
+      //}
 
-    Serial.print(distance);
-    Serial.println(" cm");
+      if (distance < 4) {  // This is where the LED On/Off happens
+        Serial.print("really close!");
+
+      }
+      else {
+        //do nothing
+      }
+
+      Serial.print(distance);
+      Serial.println(" cm");
+    }
   }
 }
 
 
 int ultra() {
   long duration, distance;
-  digitalWrite(trigPin, LOW);  // Added this line
+  pinMode(TrigEcho, OUTPUT);
+//  delay(100);
+  digitalWrite(TrigEcho, LOW);  // Added this line
   delayMicroseconds(2); // Added this line
-  digitalWrite(trigPin, HIGH);
+  digitalWrite(TrigEcho, HIGH);
   delayMicroseconds(10); // Added this line
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
+  digitalWrite(TrigEcho, LOW); 
+//  delayMicroseconds(11); // Added this line
+  pinMode(TrigEcho, INPUT);
+  
+  duration = pulseIn(TrigEcho, HIGH);
   distance = (duration / 29) ;
   return (int)distance;
 }
