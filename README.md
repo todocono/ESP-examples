@@ -6,6 +6,8 @@ This is a set of examples thought in order to run a workshop with them. Hardware
 
 ![alt tag](https://github.com/todocono/ESP-examples/blob/master/IOT-AMICA_pinout.jpg)
 
+![alt tag](https://github.com/todocono/ESP-examples/blob/master/esp_circuit_onepin_voltage_divider.png)
+
 # EX0
 Demonstration of RGB LED and Serial communication
 
